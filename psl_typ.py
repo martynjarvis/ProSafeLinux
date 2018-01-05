@@ -821,7 +821,7 @@ class PslTypPortMirror(PslTyp):
                  }
 
     def unpack_py(self, value):
-        dst_port, fixme, src_ports = struct.unpack(">bbb", value)
+        dst_port, fixme, src_ports = struct.unpack(">BBB", value)
         out_src_ports = []
         for port in list(self.BIN_PORTS.keys()):
             if (src_ports & self.BIN_PORTS[port] > 0):
@@ -838,12 +838,12 @@ class PslTypPortMirror(PslTyp):
 
     def pack_py(self, value):
         if int(value[0]) == 0:
-            return struct.pack(">bbb", 0, 0, 0)
+            return struct.pack(">BBB", 0, 0, 0)
         dst_ports = 0
         for dport in value[1].split(","):
             dst_ports += self.BIN_PORTS[int(dport)]
-        return struct.pack(">bbb", int(value[0]), 0, dst_ports)
-        
+        return struct.pack(">BBB", int(value[0]), 0, dst_ports)
+
     def unpack_cmd(self, value):
         return self.unpack_py(value)
 
